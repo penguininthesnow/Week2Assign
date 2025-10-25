@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>work-4 作業四</title>
+</head>
+<body>
+    <script>
+        function func4(sp, stat, n){
+            let candidates=[];
+            for(let i=0; i< sp.length; i++){
+                if (stat[i] === '0') {
+                    candidates.push([i, sp[i]]);
+                } //只看可服務的車廂
+            }         
+        
+    
+            let enough = candidates.filter(([i, s]) => s >= n);
+
+            let idx;
+            if (enough.length > 0) {
+                idx = enough.reduce((a,b) => (a[1] <= b[1]? a:b))[0];
+            //   選座位數最小的那一個
+            } else {
+                idx = candidates.reduce((a,b) => (a[1] >= b[1] ? a:b))[0];
+                //  選座位數最小的那一個(剛好夠)
+            }
+
+            return idx;
+        }   
+console.log (func4([3, 1, 5, 4, 3, 2], "101000", 2))
+console.log (func4([1, 0, 5, 1, 3], "10100", 2))
+console.log (func4([4, 6, 5, 8], "1000", 4))
+    
+    </script>
+</body>
+</html>

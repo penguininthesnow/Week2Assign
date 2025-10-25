@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>work-2 作業二</title>
+</head>
+<body>
+    <script>
+        const services = [
+            { name: "S1", r: 4.5, c: 1000 },
+            { name: "S2", r: 3, c: 1200},
+            { name: "S3", r: 3.8, c: 800}
+        ];
+
+        function func2(ss, start, end, criteria) {
+            if (!func2.schedule) {
+                func2.schedule = {};
+                ss.forEach(s => func2.schedule[s.name] = []);
+            }
+
+            let field = null, op = null, value = null;
+            for(const o of ["<=", ">=", "="]) {
+                if (criteria. includes(o)) {
+                    [field, value ] = criteria.split(o);
+                    op = o ;
+                    field = field.trim();
+                    value = value.trim();
+                    break;
+                }
+            }
+        
+
+            const available = [];
+        
+            for(const s of ss) {
+                const conflict = func2.schedule[s.name].some(([st, et]) => !(end <= st || start >= et));
+                if (conflict) continue;
+
+                if(field === "name") {
+                    if(op === "=" && s.name === value) {
+                        available.push(s);
+                    }
+                } else {
+                  const val = parseFloat(value);
+                  if (op === ">=" && s[field] >= val) {
+                    available.push(s);
+                  } else if (op === "<=" && s[field] <= val) {
+                    available.push(s);
+                  } else if (op === "=" && s[field] === val) {
+                    available.push(s);
+                  }
+                }
+            }
+
+            if  (available.length === 0) {
+                console.log("Sorry");
+                return;
+            }
+
+            let chosen = null;
+            if (field !=="name") {
+                const val = parseFloat(value);
+                chosen = available.reduce((a, b) => Math.abs(a[field] - val) < Math.abs(b[field] - val) ? a:b);
+            } else {
+                chosen = available[0];
+            }
+
+            func2.schedule[chosen.name].push ([start, end]);
+            console.log(chosen.name);
+         }
+
+    func2(services, 15, 17, "c>=800" )
+    func2(services, 11, 13, "r<=4" )
+    func2(services, 10, 12, "name=S3" )
+    func2(services, 15, 18, "r>=4.5" )
+    func2(services, 16, 18, "r>=4" )
+    func2(services, 13, 17, "name=S1" )
+    func2(services, 8, 9, "c<=1500" )
+
+
+    </script>
+</body>
+</html>
